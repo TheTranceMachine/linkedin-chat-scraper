@@ -1,0 +1,16 @@
+.badge {
+  border: 1px solid black;
+  margin: 5px;
+  padding: 10px; 
+}
+
+#alarmExistsError {
+  justify-content: space-between;
+  background-color: red;
+  color: white;
+  padding: 5px;
+}
+
+#alarmExistsError div {
+  cursor: pointer;
+}
