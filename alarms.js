@@ -1,27 +1,30 @@
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
-  // const toggleAlarmButton = document.querySelectorAll('#toggleAlarm');
-  const badges = document.querySelectorAll('.badge');
-  console.log(badges);
 
-  function checkAlarm(button, callback) {
+  const badges = document.querySelectorAll('.badge');
+
+  async function checkAlarm(button, callback) {
     const alarmName = button.getAttribute('data-alarm');
 
-    // const { activeAlarms } = await chrome.storage.local.get(["activeAlarms"]);
-    // console.log(activeAlarms);
-    // const alarmsSet = new Set(activeAlarms);
-    chrome.alarms.getAll((alarms) => {
-      const hasAlarm = alarms.some((a) => a.name == alarmName);
-      console.log(hasAlarm);
-      let newLabel;
-      if (hasAlarm) {
-        newLabel = 'Cancel alarm';
-      } else {
-        newLabel = 'Activate alarm';
+    const { activeAlarms } = await chrome.storage.local.get(["activeAlarms"]);
+    const alarmsSet = new Set(activeAlarms);
+
+    let newLabel;
+    let hasAlarm = false;
+    alarmsSet.forEach((alarm) => {
+      if (alarm.alarmName === alarmName) {
+        hasAlarm = true;
       }
-      button.innerText = newLabel;
-      if (callback) callback(hasAlarm);
     });
+
+    if (hasAlarm) {
+      newLabel = 'Cancel alarm';
+    } else {
+      newLabel = 'Activate alarm';
+    }
+    button.innerText = newLabel;
+
+    if (callback) callback(hasAlarm);
   }
   async function createAlarm(badge, button) {
     const alarmName = button.getAttribute('data-alarm');
@@ -29,7 +32,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const when = Date.parse(alarmDateTime.value);
 
     const { activeAlarms } = await chrome.storage.local.get(["activeAlarms"]);
-    console.log(activeAlarms);
     const alarmsSet = new Set(activeAlarms);
     const newArray = [...alarmsSet];
 
@@ -47,19 +49,27 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
   }
-  function cancelAlarm(button) {
+  async function cancelAlarm(button) {
     const alarmName = button.getAttribute('data-alarm');
-    chrome.alarms.clear(alarmName);
-  }
-  function doToggleAlarm(badge, button) {
-    checkAlarm(button, (hasAlarm) => {
-      console.log(hasAlarm);
-      if (hasAlarm) {
-        cancelAlarm(button);
-      } else {
-        createAlarm(badge, button);
+    const { activeAlarms } = await chrome.storage.local.get(["activeAlarms"]);
+    const alarmsSet = new Set(activeAlarms);
+
+    alarmsSet.forEach((alarm) => {
+      if (alarm.alarmName === alarmName) {
+        alarmsSet.delete(alarm);
+        chrome.alarms.clear(alarmName);
       }
-      checkAlarm(button);
+    });
+    await chrome.storage.local.set({ activeAlarms: [...alarmsSet] });
+  }
+  async function doToggleAlarm(badge, button) {
+    await checkAlarm(button, async (hasAlarm) => {
+      if (hasAlarm) {
+        await cancelAlarm(button);
+      } else {
+        await createAlarm(badge, button);
+      }
+      await checkAlarm(button);
     });
   }
 
