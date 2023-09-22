@@ -28,8 +28,11 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   async function createAlarm(badge, button) {
     const alarmName = button.getAttribute('data-alarm');
+
     const alarmDateTime = badge.querySelector('#alarm-date-time');
     const when = Date.parse(alarmDateTime.value);
+
+    const alarmText = document.querySelector(`#${alarmName}-text`);
 
     const { activeAlarms } = await chrome.storage.local.get(["activeAlarms"]);
     const alarmsSet = new Set(activeAlarms);
@@ -40,7 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const alarmExistsError = badge.querySelector('#alarmExistsError');
       alarmExistsError.style.display = 'flex';
     } else {
-      alarmsSet.add({ alarmName });
+      alarmsSet.add({ alarmName, alarmText: alarmText.value, alarmTime: when });
       await chrome.storage.local.set({ activeAlarms: [...alarmsSet] });
       chrome.alarms.create(alarmName, {
         // delayInMinutes: 0.1, periodInMinutes: 0.1

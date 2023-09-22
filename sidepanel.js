@@ -1,10 +1,14 @@
 const refresh = document.getElementById('refreshData');
 const data = document.querySelector('#displayData');
 
+refresh.addEventListener('click', () => {
+  location.reload();
+});
+
 (async () => {
   if (data) {
     let { chats: currentChats } = await chrome.storage.local.get(["chats"]);
-    currentChats.forEach(element => {
+    currentChats.forEach((element) => {
       const senderFormatted = element.sender.replace(/\s/g, '');
 
       const badge = document.createElement("div");
@@ -100,7 +104,3 @@ const data = document.querySelector('#displayData');
     });
   }
 })();
-
-refresh.addEventListener('click', () => {
-  location.reload();
-});

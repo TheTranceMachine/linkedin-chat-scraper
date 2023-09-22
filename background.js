@@ -21,11 +21,19 @@ chrome.notifications.onClosed.addListener((alarm) => {
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
-  const alarmText = document.querySelector(`#${alarm.name}-text`);
-  chrome.notifications.create({
-    type: 'basic',
-    iconUrl: '/images/linkedin_128.png',
-    title: 'LinkedIn contact alert',
-    message: alarmText.value
-  });
+  const { activeAlarms } = await chrome.storage.local.get(["activeAlarms"]);
+  const alarmsSet = new Set(activeAlarms);
+  const newArray = [...alarmsSet];
+
+  const findAlarm = newArray.find(o => o.alarmName === alarm.name);
+  if (findAlarm) {
+    chrome.notifications.create({
+      type: 'basic',
+      iconUrl: '/images/linkedin_128.png',
+      title: 'LinkedIn contact alert',
+      message: findAlarm.alarmText
+    });
+  } else {
+    console.log("Alarm wasn't found in the storage!", alarm);
+  }
 });

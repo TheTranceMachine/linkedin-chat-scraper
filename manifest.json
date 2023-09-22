@@ -3,6 +3,10 @@
   "description": "LinkedIn chat window scraper!",
   "version": "1.0",
   "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "side_panel": {
     "default_path": "sidepanel.html"
   },
