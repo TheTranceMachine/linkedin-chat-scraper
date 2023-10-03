@@ -1,6 +1,4 @@
-window.addEventListener('DOMContentLoaded', async () => {
-  'use strict';
-
+document.onload = (async () => {
   const badges = document.querySelectorAll('.badge');
   const { activeAlarms } = await chrome.storage.local.get(["activeAlarms"]);
   const alarmsSet = new Set(activeAlarms);
@@ -25,6 +23,4 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
     // END
   });
-
-
-}, false);
+})();
