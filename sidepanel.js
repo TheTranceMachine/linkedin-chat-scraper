@@ -17,6 +17,7 @@ refreshButton.addEventListener('click', () => {
       const senderFormatted = element.sender.replace(/[^\w\s]|\s/gi, '');
 
       const badge = document.createElement("div");
+      badge.id = `${senderFormatted}-badge`;
       badge.classList.add("badge");
 
       const titleWrapper = document.createElement("div");
@@ -30,8 +31,13 @@ refreshButton.addEventListener('click', () => {
 
       const closeBadgeButton = document.createElement("div");
       closeBadgeButton.textContent = 'x';
-      closeBadgeButton.id = `${senderFormatted}-close`;
+      closeBadgeButton.id = `${senderFormatted}__badge-close-button`;
+      closeBadgeButton.classList.add("badge-close-button");
       titleWrapper.appendChild(closeBadgeButton);
+
+      closeBadgeButton.addEventListener('click', () => {
+        badge.remove();
+      })
 
       if (element.subject) {
         const subject = document.createElement("p");
@@ -85,7 +91,7 @@ refreshButton.addEventListener('click', () => {
       const toggleAlarmButton = document.createElement("button");
       toggleAlarmButton.id = 'toggleAlarm';
       toggleAlarmButton.dataset.alarm = `${senderFormatted}-alarm`;
-      toggleAlarmButton.textContent = 'Activate Alarm';
+      toggleAlarmButton.textContent = 'Activate Notification';
       schedulerWrapper.appendChild(toggleAlarmButton);
 
       const alarmExistsError = document.createElement("div");

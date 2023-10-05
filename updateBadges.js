@@ -17,9 +17,9 @@ document.onload = (async () => {
       console.log(alarmTimeFormatted);
       alarmDateTime.value = alarmTimeFormatted;
       alarmTextArea.value = alarmText;
-      button.textContent = 'Cancel Alarm';
+      button.textContent = 'Cancel Notification';
     } else {
-      button.textContent = 'Activate Alarm';
+      button.textContent = 'Activate Notification';
     }
     // END
   });

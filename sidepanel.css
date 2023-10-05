@@ -14,7 +14,8 @@
 
 .badge {
   border: 1px solid black;
-  margin: 5px 5px 10px 5px;
+  margin: 5px 5px 20px 5px;
+  box-shadow: 5px 5px 0px gray;
 }
 
 .title__wrapper {
@@ -27,6 +28,10 @@
 .user {
   font-size: 14px;
   font-weight: bold;
+}
+
+.badge-close-button {
+  cursor: pointer;
 }
 
 .button__wrapper {
@@ -54,10 +59,13 @@
 
 .scheduler__wrapper > * {
   margin-bottom: 10px;
+  border: 1px solid black;
+  padding: 4px 6px;
 }
 
 .scheduler__text-area {
   resize: vertical;
+  border: 1px solid black;
 }
 
 .list__wrapper {
@@ -66,11 +74,15 @@
 
 .list__wrapper ul {
   padding: 0;
+  margin: 0;
 }
 
 .list__wrapper ul li {
   list-style: none;
   padding: 5px;
+  background-color: #f3f3f3;
+  margin-bottom: 10px;
+  border: 1px solid black;
 }
 
 .list__item-user {
