@@ -1,6 +1,11 @@
-const refresh = document.getElementById('refreshData');
+const refreshWrapper = document.querySelector(".refresh-button__wrapper");
 
-refresh.addEventListener('click', () => {
+const refreshButton = document.createElement('button');
+refreshButton.id = "refreshData";
+refreshButton.innerText = "Refresh Data";
+refreshWrapper.appendChild(refreshButton);
+
+refreshButton.addEventListener('click', () => {
   location.reload();
 });
 
@@ -14,9 +19,19 @@ refresh.addEventListener('click', () => {
       const badge = document.createElement("div");
       badge.classList.add("badge");
 
-      const title = document.createElement("h3");
+      const titleWrapper = document.createElement("div");
+      titleWrapper.classList.add("title__wrapper");
+      badge.appendChild(titleWrapper);
+
+      const title = document.createElement("div");
+      title.classList.add("user");
       title.textContent = element.sender;
-      badge.appendChild(title);
+      titleWrapper.appendChild(title);
+
+      const closeBadgeButton = document.createElement("div");
+      closeBadgeButton.textContent = 'x';
+      closeBadgeButton.id = `${senderFormatted}-close`;
+      titleWrapper.appendChild(closeBadgeButton);
 
       if (element.subject) {
         const subject = document.createElement("p");
@@ -24,29 +39,36 @@ refresh.addEventListener('click', () => {
         badge.appendChild(subject);
       }
 
-      const inner = document.createElement("div");
-      inner.id = 'badge__inner'
+      const buttonWrapper = document.createElement("div");
+      buttonWrapper.id = 'button__wrapper'
+      buttonWrapper.classList.add("button__wrapper");
 
-      const list = document.createElement("ul");
-      list.style.display = 'none';
+      // START - TOGGLE LIST BUTTON
+      const stoggleListWrapperButton = document.createElement("button");
+      stoggleListWrapperButton.textContent = 'Toggle Messages';
+      buttonWrapper.appendChild(stoggleListWrapperButton);
 
-      const showListButton = document.createElement("button");
-      showListButton.textContent = 'Show/Hide Messages';
-      inner.appendChild(showListButton);
-
-      showListButton.addEventListener("click", () => {
-        list.style.display = list.style.display === 'none' ? '' : 'none';
+      stoggleListWrapperButton.addEventListener("click", () => {
+        listWrapper.style.display = listWrapper.style.display === 'none' ? '' : 'none';
       });
+      // END - TOGGLE LIST BUTTON
 
+      // START - TOGGLE SCHEDULER BUTTON
       const toggleSchedulerButton = document.createElement("button");
       toggleSchedulerButton.id = 'toggleShowScheduler';
-      toggleSchedulerButton.textContent = 'Show/Hide Scheduler';
-      inner.appendChild(toggleSchedulerButton);
+      toggleSchedulerButton.textContent = 'Toggle Scheduler';
+      buttonWrapper.appendChild(toggleSchedulerButton);
 
+      toggleSchedulerButton.addEventListener("click", () => {
+        schedulerWrapper.style.display = schedulerWrapper.style.display === 'none' ? '' : 'none';
+      });
+      // END - TOGGLE SCHEDULER BUTTON
+
+      // START - SCHEDULER COMPONENT
       const schedulerWrapper = document.createElement("div");
+      schedulerWrapper.classList.add("scheduler__wrapper");
       schedulerWrapper.id = 'scheduler';
       schedulerWrapper.style.display = 'none';
-      inner.appendChild(schedulerWrapper);
 
       const schedulerDateTimeInput = document.createElement("INPUT");
       schedulerDateTimeInput.setAttribute("type", "datetime-local");
@@ -54,7 +76,10 @@ refresh.addEventListener('click', () => {
       schedulerWrapper.appendChild(schedulerDateTimeInput);
 
       const schedulerText = document.createElement("TEXTAREA");
+      schedulerText.classList.add("scheduler__text-area")
       schedulerText.id = `${senderFormatted}-alarm-text`;
+      schedulerText.rows = '4';
+      schedulerText.placeholder = "Message";
       schedulerWrapper.appendChild(schedulerText);
 
       const toggleAlarmButton = document.createElement("button");
@@ -72,15 +97,19 @@ refresh.addEventListener('click', () => {
         alarmExistsError.style.display = 'none';
         alarmExistsError.innerHTML = "";
       });
+      // END - SCHEDULER COMPONENT
 
-      toggleSchedulerButton.addEventListener("click", () => {
-        schedulerWrapper.style.display = schedulerWrapper.style.display === 'none' ? '' : 'none';
-      });
+      const listWrapper = document.createElement("div");
+      listWrapper.classList.add("list__wrapper");
+      listWrapper.style.display = 'none';
+
+      const list = document.createElement("ul");
 
       element.messages.forEach(message => {
         const item = document.createElement("li");
 
-        const user = document.createElement("h4");
+        const user = document.createElement("div");
+        user.classList.add("list__item-user");
         user.textContent = message.user;
         item.appendChild(user);
 
@@ -91,8 +120,10 @@ refresh.addEventListener('click', () => {
         list.appendChild(item);
       });
 
-      inner.appendChild(list);
-      badge.appendChild(inner);
+      badge.appendChild(buttonWrapper);
+      badge.appendChild(schedulerWrapper);
+      listWrapper.appendChild(list);
+      badge.appendChild(listWrapper);
       data.appendChild(badge);
     });
   }
