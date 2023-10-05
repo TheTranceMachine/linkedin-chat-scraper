@@ -1,3 +1,14 @@
+function createErrorDiv(alarmExistsError, text) {
+  const alarmExistsErrorDivText = document.createElement("div");
+  alarmExistsErrorDivText.textContent = text;
+  alarmExistsError.appendChild(alarmExistsErrorDivText);
+
+  const alarmExistsErrorDivIcon = document.createElement("div");
+  alarmExistsErrorDivIcon.textContent = 'x';
+  alarmExistsError.appendChild(alarmExistsErrorDivIcon);
+  alarmExistsError.style.display = 'flex';
+}
+
 const refreshWrapper = document.querySelector(".refresh-button__wrapper");
 
 const refreshButton = document.createElement('button');
@@ -35,8 +46,32 @@ refreshButton.addEventListener('click', () => {
       closeBadgeButton.classList.add("badge-close-button");
       titleWrapper.appendChild(closeBadgeButton);
 
-      closeBadgeButton.addEventListener('click', () => {
-        badge.remove();
+      closeBadgeButton.addEventListener('click', async () => {
+        const { activeAlarms } = await chrome.storage.local.get(["activeAlarms"]);
+        const alarmsSet = new Set(activeAlarms);
+        console.log(`${senderFormatted}-alarm`);
+
+        let alarmExists;
+        alarmsSet.forEach(async (alarm) => {
+          if (alarm.alarmName === `${senderFormatted}-alarm`) {
+            alarmExists = alarm;
+          }
+        });
+
+        console.log(alarmExists);
+
+        if (alarmExists) {
+          createErrorDiv(alarmExistsError, 'You have an active alarm!');
+        } else {
+          alarmsSet.delete(alarmExists);
+
+          const chatsSet = new Set(currentChats);
+          await chrome.storage.local.set({ activeAlarms: [...alarmsSet] });
+          chatsSet.forEach(chat => chat.sender === element.sender ? chatsSet.delete(chat) : chat);
+          await chrome.storage.local.set({ chats: [...chatsSet] });
+
+          badge.remove();
+        }
       })
 
       if (element.subject) {
@@ -85,7 +120,7 @@ refreshButton.addEventListener('click', () => {
       schedulerText.classList.add("scheduler__text-area")
       schedulerText.id = `${senderFormatted}-alarm-text`;
       schedulerText.rows = '4';
-      schedulerText.placeholder = "Message";
+      schedulerText.placeholder = "Notification Message";
       schedulerWrapper.appendChild(schedulerText);
 
       const toggleAlarmButton = document.createElement("button");
@@ -97,7 +132,7 @@ refreshButton.addEventListener('click', () => {
       const alarmExistsError = document.createElement("div");
       alarmExistsError.id = 'alarmExistsError';
       alarmExistsError.style.display = 'none';
-      schedulerWrapper.appendChild(alarmExistsError);
+      badge.appendChild(alarmExistsError);
 
       alarmExistsError.addEventListener("click", () => {
         alarmExistsError.style.display = 'none';
