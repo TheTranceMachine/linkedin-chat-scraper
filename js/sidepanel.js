@@ -75,7 +75,8 @@ refreshButton.addEventListener('click', () => {
       })
 
       if (element.subject) {
-        const subject = document.createElement("p");
+        const subject = document.createElement("div");
+        subject.classList.add("subject");
         subject.textContent = element.subject;
         badge.appendChild(subject);
       }
