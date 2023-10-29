@@ -1,9 +1,9 @@
-## LinkedIn Messaging Reminders 
-
+![Logo](./images/reminder128.png)
+## LinkedIn Reminders 
 ### Chrome plugin
 ---------
 
-Set up LinkedIn Messaging Reminders on Chrome:
+Set up LinkedIn Reminders on Chrome:
 1. Activate the "LinkedIn Messaging Reminders" Chrome plugin. A popup will appear with a slider and sidebar icon. By default, the slider is disabled.
 2. Go to LinkedIn and log in to your account. You should see the Messaging window on the bottom right of the screen.
 3. Click on the plugin and enable the slider in the popup.
