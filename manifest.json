@@ -1,6 +1,6 @@
 {
-  "name": "LinkedIn scraper",
-  "description": "LinkedIn chat window scraper!",
+  "name": "LinkedIn Reminders",
+  "description": "Set up LinkedIn Messaging Reminders!",
   "version": "1.0",
   "manifest_version": 3,
   "background": {

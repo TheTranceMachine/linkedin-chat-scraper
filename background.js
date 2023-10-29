@@ -1,5 +1,5 @@
 chrome.notifications.onClicked.addListener(async (alarm) => {
-  console.log("Clicked notification!", alarm);
+  console.log("Clicked reminder!", alarm);
   const linkedInTab = await chrome.tabs.query({ url: 'https://www.linkedin.com/*' });
   if (linkedInTab.length) {
     chrome.tabs.update(linkedInTab[0].id, { selected: true });
@@ -17,7 +17,7 @@ chrome.notifications.onClicked.addListener(async (alarm) => {
 });
 
 chrome.notifications.onClosed.addListener((alarm) => {
-  console.log("Closed notification!", alarm);
+  console.log("Closed reminder!", alarm);
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
@@ -34,6 +34,6 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
       message: findAlarm.alarmText
     });
   } else {
-    console.log("Alarm wasn't found in the storage!", alarm);
+    console.log("Reminder wasn't found in the storage!", alarm);
   }
 });

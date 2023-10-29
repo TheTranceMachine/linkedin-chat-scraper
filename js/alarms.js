@@ -27,9 +27,9 @@ window.onload = () => {
       });
 
       if (hasAlarm) {
-        newLabel = 'Cancel Notification';
+        newLabel = 'Cancel';
       } else {
-        newLabel = 'Activate Notification';
+        newLabel = 'Activate';
       }
       button.innerText = newLabel;
 

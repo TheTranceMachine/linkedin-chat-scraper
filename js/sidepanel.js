@@ -61,7 +61,7 @@ refreshButton.addEventListener('click', () => {
         console.log(alarmExists);
 
         if (alarmExists) {
-          createErrorDiv(alarmExistsError, 'You have an active alarm!');
+          createErrorDiv(alarmExistsError, 'You have an active reminder!');
         } else {
           alarmsSet.delete(alarmExists);
 
@@ -87,7 +87,7 @@ refreshButton.addEventListener('click', () => {
 
       // START - TOGGLE LIST BUTTON
       const stoggleListWrapperButton = document.createElement("button");
-      stoggleListWrapperButton.textContent = 'Toggle Messages';
+      stoggleListWrapperButton.textContent = 'Messages';
       buttonWrapper.appendChild(stoggleListWrapperButton);
 
       stoggleListWrapperButton.addEventListener("click", () => {
@@ -98,7 +98,7 @@ refreshButton.addEventListener('click', () => {
       // START - TOGGLE SCHEDULER BUTTON
       const toggleSchedulerButton = document.createElement("button");
       toggleSchedulerButton.id = 'toggleShowScheduler';
-      toggleSchedulerButton.textContent = 'Toggle Scheduler';
+      toggleSchedulerButton.textContent = 'Reminder';
       buttonWrapper.appendChild(toggleSchedulerButton);
 
       toggleSchedulerButton.addEventListener("click", () => {
@@ -121,13 +121,13 @@ refreshButton.addEventListener('click', () => {
       schedulerText.classList.add("scheduler__text-area")
       schedulerText.id = `${senderFormatted}-alarm-text`;
       schedulerText.rows = '4';
-      schedulerText.placeholder = "Notification Message";
+      schedulerText.placeholder = "Reminder Message";
       schedulerWrapper.appendChild(schedulerText);
 
       const toggleAlarmButton = document.createElement("button");
       toggleAlarmButton.id = 'toggleAlarm';
       toggleAlarmButton.dataset.alarm = `${senderFormatted}-alarm`;
-      toggleAlarmButton.textContent = 'Activate Notification';
+      toggleAlarmButton.textContent = 'Activate';
       schedulerWrapper.appendChild(toggleAlarmButton);
 
       const alarmExistsError = document.createElement("div");
