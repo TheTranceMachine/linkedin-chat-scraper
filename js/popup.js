@@ -1,4 +1,4 @@
-// Initialize button with users' preferred color
+// Initialize button
 const collect = document.getElementById('collectData');
 const collectCheckbox = document.querySelector("input");
 const sidepanelButton = document.getElementById('displaySidepanel');
@@ -27,6 +27,11 @@ collect.addEventListener('click', async () => {
 chrome.storage.local.get(["collectionIsActive"], async ({ collectionIsActive }) => {
   if (collectionIsActive) {
     collect.classList.add("active");
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: collectChatData
+    });
   } else {
     collect.classList.remove("active");
   }
